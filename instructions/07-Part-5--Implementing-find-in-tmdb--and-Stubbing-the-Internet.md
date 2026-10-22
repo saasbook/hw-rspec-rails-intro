@@ -4,7 +4,7 @@
 
 Storing API keys falls under the general category of credential management, and in past versions of `rails`, it has been done in a variety of ways. Since you only have one API key to store, we will forgo the process of securing your credentials in an environment file, although this is a must for any real app you deploy. You can store your API key as a parameter to the  model method `find_in_tmdb` with some default value (possibly the correct API key). This will let you overwrite the API key with an invalid one when you are testing. 
 
-If you push your code to GitHub, make sure the repo is set to a private mode (as it should be!) since GitHub will automatically detect exposed API keys and inform the provider. Storing plain API keys on a public domain will result in losing the API key. If you are not updating your GitHub repo as we go, you shall not worry about this, instead you will be deploying to Heroku directly. You will get more direct exposure with working with credentials in the right way in the final project (CHIP 10.5). There, you will actually have to secure and store a number of API keys and credentials.
+If you push your code to GitHub, make sure the repo is set to a private mode (as it should be!) since GitHub will automatically detect exposed API keys and inform the provider. Storing plain API keys on a public domain will result in losing the API key. You will get more direct exposure with working with credentials in the right way in the final project (CHIP 10.5). There, you will actually have to secure and store a number of API keys and credentials.
 
 
 ## Implementing TMDb search
@@ -105,7 +105,7 @@ And voila, RottenPotatoes can now call TMDb API and dynamically add movies to th
 
 ## Your turn to test
 
-So far we walked through writing RSpec tests together, but eventually you will have to start writing your own. Testing is essential part of Agile, and following patterns like Red-Green-Refactor will only benefit you in the long run. In the next part you will deploy the new version of RottenPotatoes to Heroku and then submit to autograder. Unlike previous CHIPS, we will only expose a subset of the tests that you fail. To get full points you will _most likely_ need to write your own tests.
+So far we walked through writing RSpec tests together, but eventually you will have to start writing your own. Testing is essential part of Agile, and following patterns like Red-Green-Refactor will only benefit you in the long run. In the next part you will deploy the new version of RottenPotatoes and then submit to autograder. Unlike previous CHIPS, we will only expose a subset of the tests that you fail. To get full points you will _most likely_ need to write your own tests.
 
 ---
 
