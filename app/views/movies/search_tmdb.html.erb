@@ -1,28 +1,25 @@
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<h1>Search in TMDb</h1>
 
+<div class="my-3">
+  <%# Part 1 here: fill in the route and method this form submits with, and give it the id tmdb_form %>
+  <%= form_tag do %>
+    <%= label_tag 'movie_title_field', 'Movie Name', class: 'form-label' %>
+    <%= text_field_tag 'title', nil, class: 'form-control', id: 'movie_title_field', placeholder: 'Manhunter' %>
+    <%= label_tag 'movie_year_field', 'Release Year', class: 'form-label' %>
+    <%= text_field_tag 'release_year', nil, class: 'form-control', id: 'movie_year_field', placeholder: '1986' %>
 
-<h2>Search in TMDb</h2>
-<%# Part 5 here %>
+    <div class="form-check">
+      <%= radio_button_tag 'language', 'en', false, class: 'form-check-input' %>
+      <%= label_tag 'language_en', 'English Only', class: 'form-check-label' %>
+    </div>
+    <div class="form-check">
+      <%= radio_button_tag 'language', 'all', true, class: 'form-check-input' %>
+      <%= label_tag 'language_all', 'All Languages', class: 'form-check-label' %>
+    </div>
 
-<div class="search-container">
-<%# Part 1 here %>
-<%= form_tag <%# fill in here #%> do %>
-    <label for="searchMovieName">Movie Name</label>
-    <%= text_field_tag 'title', nil, class: "form-control", id: "movie_title_field", placeholder: "Manhunter", id: "movie_title_field"%> 
-    <label for="searchReleaseDateField">Release Year</label>
-    <%= text_field_tag 'release_year', nil, class: "form-control", id: "movie_year_field", placeholder: "1986", id: "movie_year_field"%>
-  
-  <div class="form-check">
-    <%= radio_button_tag 'language', 'en', false, class: "form-check-input" %>
-    <label class="form-check-label" for="language_en">English Only</label>
-  </div>
-
-  <div class="form-check">
-    <%= radio_button_tag 'language', 'all', true, class: "form-check-input" %>
-    <label class="form-check-label" for="language_all">All Languages</label>
-  </div>
-  <%= submit_tag 'Search', id: 'tmdb_submit', class: 'btn btn-warning col-2' %>
-  
-<% end %>
+    <%= submit_tag 'Search', id: 'tmdb_submit', class: 'btn btn-warning' %>
+    <%# Part 1 here: add a button that takes the user back to the movie list %>
+  <% end %>
 </div>
+
+<%# Part 5 here: show the search results in a table with id search_movies %>

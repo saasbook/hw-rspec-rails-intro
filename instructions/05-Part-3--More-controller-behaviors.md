@@ -14,7 +14,7 @@ In the code below that you can plug into the correct  example, the _match condit
 it 'selects the Search Results template for rendering' do
   fake_results = [double('movie1'), double('movie2')]
   allow(Movie).to receive(:find_in_tmdb).and_return(fake_results)
-  get :search_tmdb, {:search_terms => 'hardware'}
+  get :search_tmdb, params: { search_terms: 'hardware' }
   expect(response).to render_template('search_tmdb')
 end
 ```
@@ -25,12 +25,12 @@ In this simple example, you could argue that we're splitting hairs by using `exp
 
 ## DRY out specs by refactoring common code into a `before` block
 
-Before we write another example, we consider the Refactor step of Red--Green--Refactor.  Modify your controller spec file to look like this (but don't remove the monkey-patching code if you added it earlier!):
+Before we write another example, we consider the Refactor step of Red--Green--Refactor.  Modify your controller spec file to look like this:
 
 ```ruby
 require 'rails_helper'
 
-describe MoviesController do
+describe MoviesController, type: :controller do
   describe 'searching TMDb' do
     before :each do
       @fake_results = [double('movie1'), double('movie2')]
@@ -38,11 +38,11 @@ describe MoviesController do
     it 'calls the model method that performs TMDb search' do
       expect(Movie).to receive(:find_in_tmdb).with('hardware').
         and_return(@fake_results)
-      get :search_tmdb, {:search_terms => 'hardware'}
+      get :search_tmdb, params: { search_terms: 'hardware' }
     end
     it 'selects the Search Results template for rendering' do
       allow(Movie).to receive(:find_in_tmdb).and_return(@fake_results)
-      get :search_tmdb, {:search_terms => 'hardware'}
+      get :search_tmdb, params: { search_terms: 'hardware' }
       expect(response).to render_template('search_tmdb')
     end
     it 'makes the TMDb search results available to that template'
@@ -92,7 +92,7 @@ Once again, we will take advantage of doubles. In our case, we've already arrang
 ```ruby
 require 'rails_helper'
  
-describe MoviesController do
+describe MoviesController, type: :controller do
     describe 'searching TMDb' do
       before :each do
         @fake_results = [double('movie1'), double('movie2')]
@@ -100,12 +100,12 @@ describe MoviesController do
       it 'calls the model method that performs TMDb search' do
         expect(Movie).to receive(:find_in_tmdb).with('hardware').
          and_return(@fake_results)
-       get :search_tmdb, {:search_terms => 'hardware'}
+       get :search_tmdb, params: { search_terms: 'hardware' }
      end
      describe 'after valid search' do
        before :each do
          allow(Movie).to receive(:find_in_tmdb).and_return(@fake_results)
-         get :search_tmdb, {:search_terms => 'hardware'}
+         get :search_tmdb, params: { search_terms: 'hardware' }
        end
        it 'selects the Search Results template for rendering' do
          expect(response).to render_template('search_tmdb')

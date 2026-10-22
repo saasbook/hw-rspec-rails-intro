@@ -1,4 +1,4 @@
-# CHIP 8.5 New
+# CHIP 8.5: Intro to RSpec and TDD
 
 1. [Intro to RSpec and TDD](01-Intro-to-RSpec-and-TDD.md)
 2. [Getting Started](02-Getting-Started.md)

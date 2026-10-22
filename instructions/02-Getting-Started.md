@@ -12,37 +12,45 @@ As the text notes, to capture expectations in tests before there is any code to 
 In the rest of this exercise we will use TDD to develop the RottenPotatoes functionality that allows a user to look up a movie in TMDb.  Specifically, we will use TDD to create the controller method, which receives the user's request, and the model method, which actually calls the remote TMDb service to get information about the specified movie.
 
 ## Setup
-Start by cloning this assignment's starter repository:
+If your course staff created a repository for you for this assignment, clone that one, using the URL they gave you:
 
 ```
-git clone git@github.com:cs169/su24-chips-8.5-<TEAM NUMBER>.git rspec-rails-intro
+git clone <YOUR_REPO_URL> rspec-rails-intro
 cd rspec-rails-intro
 ```
 
-Make sure your Bundler version is <2.0 (`gem uninstall bundler`, then `gem install --version=1.17.3 bundler` if you have the wrong version installed). Then, run `bundle install --without production` to set up all the dependencies.
+Otherwise, start from the starter code at [`https://github.com/saasbook/hw-rspec-rails-intro`](https://github.com/saasbook/hw-rspec-rails-intro): make your own **private** repository from that template (you'll be committing an API key to it), and clone that. Or, if you are not pushing your changes to GitHub, clone the template directly:
+
+```
+git clone https://github.com/saasbook/hw-rspec-rails-intro.git rspec-rails-intro
+cd rspec-rails-intro
+```
+
+This is the RottenPotatoes app you finished in CHIPS 5.3, upgraded to Rails 7.1 and Ruby 3.3 (see `.ruby-version`). Run `bundle config set without 'production'` (once; Bundler remembers it for this project), then `bundle install` to set up all the dependencies.
 
 Onwards! In this assignment we will be working with the TMDb API and Guard to automate our workflow. We also make use of [Faraday](https://github.com/lostisland/faraday) - an HTTP client library - to make API calls. So, go ahead and edit the `Gemfile` to include the following gems:
 
 ```ruby
-gem 'faraday', '1.8.0'  # in main group; simplifies calling TMDb
+gem 'faraday', '~> 2.12'  # in main group; simplifies calling TMDb
 group :test do
-  gem 'rails-controller-testing'
-  gem 'guard-rspec'                 # automates re-running tests
+  gem 'rails-controller-testing'  # assigns() and render_template in controller specs
+  gem 'guard-rspec'               # automates re-running tests
 end
 ```
 
-* Rerun `bundle install` to get the gems.  Then run `rails generate rspec:install` to ensure the files needed by RSpec are in place.
+* Rerun `bundle install` to get the gems.  Then run `bundle exec rails generate rspec:install` to create `.rspec`, `spec/spec_helper.rb`, and `spec/rails_helper.rb`, the files RSpec needs.
 
-* Edit the file `spec/rails_helper.rb` to include `require 'byebug'` at the top, so we can drop into the debugger as needed to get tests working.
+* The `debug` gem is already in the Gemfile: put `debugger` on any line of your code or specs to stop there and get a debugger prompt while getting tests working.
 
 * Later we will introduce the Guard tool as a way to re-run tests automatically as you code.  Run `bundle exec guard init rspec` to setup the files necessary for Guard, which will result in a new `Guardfile` being created; add that file to your repo.
 
 * Setup the database with the usual commands:
 
 ```
-bundle exec rails db:migrate
-bundle exec rails db:seed
+bundle exec rails db:prepare
 ```
+
+(`db:prepare` creates the database, loads the schema, and seeds it with movies.)
 
 * Use this command whenever you want to run the server:
 

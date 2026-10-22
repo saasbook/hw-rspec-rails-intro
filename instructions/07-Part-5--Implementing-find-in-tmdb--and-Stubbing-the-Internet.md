@@ -12,17 +12,7 @@ If you push your code to GitHub, make sure the repo is set to a private mode (as
 Equipped with an API key you will finally move on to implementing `find_in_tmdb` method. Recall that we only have three input fields, the `title` of the movie, the `release_year`, and the `language`. Note, that providing `release_year` is actually optional, so it can be left blank and the API call should still be performed, whereas if the `title` field is left out, the app should display an error message "Please fill in all required fields!". You may do this error checking in the controller method. 
 ![pic1](img/missing-fields-error.png)
 
-Additionally, if no matching movies are returned, the app should display "No movies found with given parameters!". As a starting point, copy the code below into the `search_tmdb.html.erb`; it will make sure that the messages are displayed in the desired style (well, almost, what should the value of key be? you might find bootstrap [alerts](https://getbootstrap.com/docs/5.0/components/alerts/) and [colors](https://getbootstrap.com/docs/5.0/utilities/colors/) helpful).
-
-
-```erb
-<% flash.each do |key, value| %>
-  <div class="alert alert-<%= key %> alert-dismissible fade show" role="alert">
-    <%= value %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-<% end %>
-```
+Additionally, if no matching movies are returned, the app should display "No movies found with given parameters!". Both messages are flash messages, and every page of RottenPotatoes already displays them: the layout renders `app/views/layouts/_flash.html.erb`, which shows each flash message as a Bootstrap [alert](https://getbootstrap.com/docs/5.3/components/alerts/), styled by the `bootstrap_alert_class` helper in `app/helpers/application_helper.rb`. Which flash key should you use so that these messages are displayed as warnings? (Look at how that helper maps flash keys to alert classes.)
 The `find_in_tmdb` method should return a list of movies that have NOT been saved to the database. A slight nuance with TMDb API is that it actually does not return a MPAA rating on a query for movie lookups. This would need to be done in a separate API call, so we will not require displaying the correct ratings and you should just put "R" for all of them (to be safe). Curious readers are encourages to try fetching the correct ratings, but this will not be tested in the autograder (you may need to lookup how ratings are stored as numbers in TMDb). 
 
 
@@ -33,7 +23,7 @@ Back to spec! Unfortunately, the spec we have written so far will actually call 
 We can fix this by introducing a seam that isolates the caller from the callee. Once again we stand on the shoulders of others. `WebMock` is stubbing library which we will use to stub our requests to the TMDb. Include the following line in the `test` group of Gemfile and run `bundle install`.
 
 ```ruby
-  gem "webmock", '2.3.2'
+  gem "webmock"
 ```
 Then, we will need to include this library in `spec/spec_helper.rb`. Add the code below to the top of that file.
 
@@ -59,7 +49,6 @@ RSpec.configure do |config|
 
   config.before(:each) do
     stub_request(:get, /api.themoviedb.org/).
-      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Faraday v1.8.0'}).
       to_return(status: 200, body: JSON.generate(json_return), headers: {})
   end
 end
@@ -105,7 +94,7 @@ And voila, RottenPotatoes can now call TMDb API and dynamically add movies to th
 
 ## Your turn to test
 
-So far we walked through writing RSpec tests together, but eventually you will have to start writing your own. Testing is essential part of Agile, and following patterns like Red-Green-Refactor will only benefit you in the long run. In the next part you will deploy the new version of RottenPotatoes and then submit to autograder. Unlike previous CHIPS, we will only expose a subset of the tests that you fail. To get full points you will _most likely_ need to write your own tests.
+So far we walked through writing RSpec tests together, but eventually you will have to start writing your own. Testing is essential part of Agile, and following patterns like Red-Green-Refactor will only benefit you in the long run. In the next part you will deploy the new version of RottenPotatoes and then submit to the autograder. The autograder will tell you which of its tests fail, but not why your code fails them: to track down a bug, write a spec of your own that reproduces it.
 
 ---
 

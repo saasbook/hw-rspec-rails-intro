@@ -1,60 +1,44 @@
-<!--  This file is app/views/movies/index.html.erb -->
-<h2>All Movies</h2>
+<h1>Movies</h1>
 
-<div class="row navigation">
-  <div class="col-md-10">
-    <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
-      <%= hidden_field_tag 'sort_by', @sort_by %>
-      Include:
-      <% @all_ratings.each do |rating| %>
-        <div class="form-check  form-check-inline">
-          <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
-          <%= check_box_tag "ratings[#{rating}]", '1', (@ratings_to_show_hash.include?(rating)),
-            class: 'form-check-input' %>
-        </div>
-      <% end %>
-      <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
+<div class="my-3">
+  <%= form_tag movies_path, method: :get, id: 'ratings_form', local: true do %>
+    Include:
+    <% @all_ratings.each do |rating| %>
+      <div class="form-check  form-check-inline">
+        <%= check_box_tag "ratings[#{rating}]", "1", @ratings_to_show.include?(rating), class: 'form-check-input' %>
+        <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
+      </div>
     <% end %>
-  </div>
-  <div class="col-md-2">
-    <%# Part 1 here %>
-  </div>
-
+    <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
+  <% end %>
 </div>
 
-<table class="table table-striped col-md-12" id="movies">
+<table id="movies" class="table table-striped table-hover">
+  <caption class="visually-hidden">
+    All movies. The "Movie Title" and "Release Date" headers are links that re-sort the table.
+  </caption>
   <thead>
     <tr>
-      <th>
-        <%= link_to 'Movie Title', movies_path({sort_by: 'title', ratings: @ratings_to_show_hash}),
-                      id: 'title_header', class: ('bg-warning hilite' if @sort_by == 'title') %>
+      <th scope="col" aria-sort="<%= sort_aria('title') %>" class="<%= sort_classes('title') %>">
+        <%= link_to movies_path(sort_by: 'title', ratings: ratings_for_url), id: 'title_header' do %>
+          Movie Title<%= sort_indicator('title') %>
+        <% end %>
       </th>
-      <th>Rating</th>
-      <th>
-        <%= link_to 'Release Date',
-              movies_path({sort_by: 'release_date', ratings: @ratings_to_show_hash}),
-              id: 'release_date_header', class: ('bg-warning hilite' if @sort_by == 'release_date') %>
+      <th scope="col">Rating</th>
+      <th scope="col" aria-sort="<%= sort_aria('release_date') %>" class="<%= sort_classes('release_date') %>">
+        <%= link_to movies_path(sort_by: 'release_date', ratings: ratings_for_url), id: 'release_date_header' do %>
+          Release Date<%= sort_indicator('release_date') %>
+        <% end %>
       </th>
-      <th>More Info</th>
+      <th scope="col">More Info</th>
     </tr>
   </thead>
   <tbody>
     <% @movies.each do |movie| %>
-      <tr>
-        <td>
-          <%= movie.title %>
-        </td>
-        <td>
-          <%= movie.rating %>
-        </td>
-        <td>
-          <%= movie.release_date %>
-        </td>
-        <td>
-          <%= link_to "More about #{movie.title}", movie_path(movie) %>
-        </td>
-      </tr>
+      <%= render 'movie_row', movie: movie %>
     <% end %>
   </tbody>
 </table>
-<%= link_to 'Add new movie', new_movie_path, class: 'btn btn-primary' %>
+
+<%= link_to "New movie", new_movie_path, class: 'btn btn-primary' %>
+<%# Part 1 here: add a button that takes the user to the TMDb search page %>

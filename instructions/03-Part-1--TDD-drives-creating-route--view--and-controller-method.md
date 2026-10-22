@@ -31,7 +31,7 @@ So, create the file `spec/controllers/movies_controller_spec.rb` containing the 
 ```ruby
 require 'rails_helper'
 
-describe MoviesController do
+describe MoviesController, type: :controller do
   describe 'searching TMDb' do
     it 'calls the model method that performs TMDb search'
     it 'selects the Search Results template for rendering'
@@ -40,24 +40,7 @@ describe MoviesController do
 end
 ```
 
-**Side note**: Ruby version 2.6.6 with Rails 4.2.11 has a unique bug that may or may not appear when your run the controller tests. If you see errors with a keyword `ThreadError` include the following code snippet at the top of `movies_controller_spec.rb`, after the `require` method call. This a clever hack that uses monkey-patching to resolve errors at runtime. 
-
-```ruby
-if RUBY_VERSION>='2.6.0'
-  if Rails.version < '5'
-    class ActionController::TestResponse < ActionDispatch::TestResponse
-      def recycle!
-        # hack to avoid MonitorMixin double-initialize error:
-        @mon_mutex_owner_object_id = nil
-        @mon_mutex = nil
-        initialize
-      end
-    end
-  else
-    puts "Monkeypatch for ActionController::TestResponse no longer needed"
-  end
-end
-```
+**Note**: `type: :controller` tells RSpec that this is a controller spec, which gives the examples controller-spec helpers such as `get`, `response`, and `assigns`. (Uncommenting `config.infer_spec_type_from_file_location!` in `spec/rails_helper.rb` would instead infer the type from the `spec/controllers` directory.)
     
 Line 3 says that the following specs **describe** the behavior of the `MoviesController` class.  Because this class has several methods, line 4 says that this first set of specs describes the behavior of the method that searches TMDb.  As you can see, `describe` can be followed by either a class name or a descriptive documentation string, and `describe` blocks can be nested.  As we'll see later, nesting allows grouping sets of related examples that share some of the same setup or teardown code.
 

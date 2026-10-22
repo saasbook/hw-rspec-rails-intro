@@ -1,10 +1,32 @@
-# CHIP 8.5: Intro to Rspec and TDD
+# CHIP 8.5: Intro to RSpec and TDD
 
-In this assignment you will take a deep dive into both the concepts and mechanics of doing test-driven development (TDD) with the RSpec testing framework, using the Guard tool to automatically re-run tests as you change code and using Webmock to provide "canned" responses for tests that exercise code that communicates with an external service. The basic flow of TDD is red-green-refactor: write a test that fails (red), add code to make that test pass (green), look for opportunities to clean up your code and tests (refactor), repeat until all test cases are done.
+[View this assignment on GitHub](https://github.com/saasbook/hw-rspec-rails-intro)
 
-The assignment is a divided into the following parts:
+[Read the assignment instructions](instructions/README.md)
 
-1. Basic setup of RSpec and Guard, and how to manually and automatically run specs
-2. From red to green: getting the first spec to pass
-3. From green to refactor: more controller specs and DRYing out tests
-4. The model spec: stubbing the Internet with Webmock
+In this assignment you will take a deep dive into both the concepts and mechanics of doing test-driven development (TDD) with the RSpec testing framework, using the Guard tool to automatically re-run tests as you change code and using WebMock to provide "canned" responses for tests that exercise code that communicates with an external service. You will use TDD to add a feature to RottenPotatoes that searches The Movie Database (TMDb) and adds the movies it finds, then deploy the result to Render or Heroku. The autograder tests both your deployed app and the code you submit.
+
+This repo is the RottenPotatoes app from CHIPS 5.3 (Rails 7.1, Ruby 3.3), with starter files for the search page.
+
+**Remember, commit early and often!**
+
+## GitHub
+
+If your course staff created a repository for you, clone that one. Otherwise, make your own **private** repository from the template [`https://github.com/saasbook/hw-rspec-rails-intro`](https://github.com/saasbook/hw-rspec-rails-intro) (it will hold your TMDb API key), or, if you are not pushing your changes to GitHub, clone the template directly:
+
+```sh
+git clone https://github.com/saasbook/hw-rspec-rails-intro.git rspec-rails-intro
+```
+
+## Instructions
+
+The assignment itself is in the [instructions](instructions/README.md) folder of this repo:
+
+1. [Intro to RSpec and TDD](instructions/01-Intro-to-RSpec-and-TDD.md)
+2. [Getting Started](instructions/02-Getting-Started.md)
+3. [Part 1: TDD drives creating route, view, and controller method](instructions/03-Part-1--TDD-drives-creating-route--view--and-controller-method.md)
+4. [Part 2: Getting the first spec to pass](instructions/04-Part-2--Getting-the-first-spec-to-pass.md)
+5. [Part 3: More controller behaviors](instructions/05-Part-3--More-controller-behaviors.md)
+6. [Part 4: TDD for the Model](instructions/06-Part-4--TDD-for-the-Model.md)
+7. [Part 5: Implementing find_in_tmdb, and Stubbing the Internet](instructions/07-Part-5--Implementing-find-in-tmdb--and-Stubbing-the-Internet.md)
+8. [Deploying and submitting](instructions/08-Submission-Instructions.md)

@@ -1,24 +1,8 @@
-<!--  app/views/movies/show.html.erb -->
-<h2>Details about <em><%= @movie.title %></em></h2>
+<%= render @movie %>
 
-<ul id="details">
-  <li>
-    Rating:
-    <%= @movie.rating %>
-  </li>
-  <li>
-    Released on:
-    <%= @movie.release_date.strftime("%B %d, %Y") %>
-  </li>
-</ul>
+<div>
+  <%= link_to "Edit this movie", edit_movie_path(@movie) %> |
+  <%= link_to "Back to movies", movies_path %>
 
-<h3>Description:</h3>
-<p id="description">
-  <%= @movie.description %>
-</p>
-
-<div class="row">
-  <%= link_to 'Edit', edit_movie_path(@movie), class: 'btn btn-primary col-2' %>
-  <%= link_to 'Delete', movie_path(@movie), 'data-method': 'delete', 'data-confirm': 'Are you sure?', class: 'btn btn-danger col-2' %>
-  <%= link_to 'Back to movie list', movies_path, class: 'btn btn-primary col-2' %>
+  <%= button_to "Destroy this movie", @movie, method: :delete, class: 'btn btn-danger btn-sm my-3' %>
 </div>

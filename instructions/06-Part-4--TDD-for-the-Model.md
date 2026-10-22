@@ -20,7 +20,7 @@ Whenever you set out to use a remote API, with or without a gem wrapper, you nee
 <details>
 <summary>
   Suppose your API key was <code>5678</code>.  Construct a URI that would call
-  TMDb's search function to search for the made-for-TV movie "This Life + 10".  (Don't forget to <a href="https://en.wikipedia.org/wiki/Percent-encoding">escape nonalphanumeric characters in the URI</a>. Here are two <a href="https://www.url-encode-decode.com">online</a> <a href="http://www.utilities-online.info/urlencode">tools</a> to help you do this. Ruby's <a href="https://ruby-doc.org/stdlib/libdoc/uri/rdoc/URI/Escape.html"><code>URI.escape function</code></a> can also do this programmatically, as in <code>URI::escape('https://some.url.com/etc.')</code>.
+  TMDb's search function to search for the made-for-TV movie "This Life + 10".  (Don't forget to <a href="https://en.wikipedia.org/wiki/Percent-encoding">escape nonalphanumeric characters in the URI</a>. Here are two <a href="https://www.url-encode-decode.com">online</a> <a href="http://www.utilities-online.info/urlencode">tools</a> to help you do this. Ruby's <a href="https://docs.ruby-lang.org/en/master/URI.html#method-c-encode_www_form_component"><code>URI.encode_www_form_component</code></a> can also do this programmatically, as in <code>URI.encode_www_form_component('this life + 10')</code>.
 </summary>
 <p>
 <blockquote>
@@ -53,9 +53,9 @@ Before we start using Faraday, let's make sure we have a solid understanding on 
   </summary>
   <blockquote>
     URI1:
-     <code>https://api.themoviedb.org/3/search/movie?api_key=9d9c894fdcbeb32f1d1b2ae2d8427402&amp;query=Manhunter&amp;year=1986</code> <br>
+     <code>https://api.themoviedb.org/3/search/movie?api_key=YOUR_API_KEY&amp;query=Manhunter&amp;year=1986</code> <br>
     URI2:
-     <code>https://api.themoviedb.org/3/search/movie?api_key=9d9c894fdcbeb32f1d1b2ae2d8427402&amp;query=Gone%20Girl&amp;language=en-US</code>
+     <code>https://api.themoviedb.org/3/search/movie?api_key=YOUR_API_KEY&amp;query=Gone%20Girl&amp;language=en-US</code>
 
   </blockquote>
   
@@ -79,7 +79,7 @@ What Ruby expression would return the first element in the list of
 matching movies?
 </summary>
 <blockquote>
-<code>response.results[0]</code> or <code>response.results.first</code>
+<code>JSON.parse(response.body)["results"][0]</code> or <code>JSON.parse(response.body)["results"].first</code>
 </blockquote>
 </details>
 
@@ -90,7 +90,7 @@ What Ruby expression would set the variable  <code>overview</code> to
 the first search result's movie summary?
 </summary>
 <blockquote>
-<code>overview = response.results[0].overview</code>
+<code>overview = JSON.parse(response.body)["results"][0]["overview"]</code>
 </blockquote>
 </details>
 
@@ -103,8 +103,8 @@ href="https://guides.rubyonrails.org/active_support_core_extensions.html">conven
 extensions</a> to help manage date and time objects.
 </summary>
 <blockquote>
-<code>Date.parse(response.results[0].release_date)</code> or
-<code>response.results[0].release_date.to_date</code>
+<code>Date.parse(results[0]["release_date"])</code> or
+<code>results[0]["release_date"].to_date</code>, where <code>results = JSON.parse(response.body)["results"]</code>
 </blockquote>
 </details>
 
@@ -147,7 +147,7 @@ By convention over configuration, specs for the `Movie` model go in `spec/models
 ```ruby
 require 'rails_helper'
 
-describe Movie do
+describe Movie, type: :model do
   describe 'searching Tmdb by keyword' do
     it 'calls Faraday gem with CS169 domain' do
       expect(Faraday).to receive(:get).with('https://cs169.org')
@@ -158,7 +158,7 @@ end
 ```
 
 ```ruby
-class Movie < ActiveRecord::Base
+class Movie < ApplicationRecord
 
   def self.find_in_tmdb(string)
     Faraday.get(string)
