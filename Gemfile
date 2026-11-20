@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby ">= 3.3.8"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.1.5"
+gem "rails", "~> 7.1.6"
 
 # Rails 7.1 cannot encode JSON with json 3.x (it passes the removed
 # quirks_mode option), and gems such as faraday pull in the latest json.
